@@ -30,6 +30,8 @@
 %include vectors.i
 %include swap.i
 
+
+
 %{
 using QuantLib::Pillar;
 using QuantLib::RateHelper;
@@ -41,6 +43,7 @@ using QuantLib::BondHelper;
 using QuantLib::FixedRateBondHelper;
 using QuantLib::OISRateHelper;
 using QuantLib::DatedOISRateHelper;
+using QuantLib::FxSwapRateHelper;
 typedef boost::shared_ptr<RateHelper> DepositRateHelperPtr;
 typedef boost::shared_ptr<RateHelper> FraRateHelperPtr;
 typedef boost::shared_ptr<RateHelper> FuturesRateHelperPtr;
@@ -49,7 +52,20 @@ typedef boost::shared_ptr<RateHelper> BondHelperPtr;
 typedef boost::shared_ptr<RateHelper> FixedRateBondHelperPtr;
 typedef boost::shared_ptr<RateHelper> OISRateHelperPtr;
 typedef boost::shared_ptr<RateHelper> DatedOISRateHelperPtr;
+typedef boost::shared_ptr<RateHelper> FxSwapRateHelperPtr;
 %}
+
+#if defined(SWIGPYTHON)
+
+%module ratehelpers
+ %{
+ /* Includes the header in the wrapper code */
+#include <ql/termstructures/yield/ratehelpers.hpp>
+
+ %}
+ 
+
+#else
 
 struct Pillar {
     enum Choice { MaturityDate, LastRelevantDate, CustomDate};
@@ -447,5 +463,7 @@ namespace std {
     %template(RateHelperVector) vector<boost::shared_ptr<RateHelper> >;
 }
 
+
+#endif
 
 #endif
